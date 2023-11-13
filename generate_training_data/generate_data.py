@@ -16,7 +16,7 @@ runfunc = features
 datapath = '../data/'
 repopath = '../'
 
-datasets ='all' # either a list of folders ([resonant, TTVsystems/Kepler-431]) or 'all' or 'ttv' to expand
+datasets = ['resonant'] # either a list of folders ([resonant, TTVsystems/Kepler-431]) or 'all' or 'ttv' to expand
 
 kwargs = OrderedDict()
 kwargs['Norbits'] = 1e4
@@ -44,15 +44,6 @@ if datasets == 'all':
     datasets = ['random', 'resonant', 'TTVsystems/KOI-1576/', 'nonressystems/Kepler-431/']
 
 for dataset in list(datasets):
-    if dataset == 'random':
-        if rebound.__githash__ != '4a6c79ae14ffde27828dd9d1f8d8afeba94ef048':
-            print('random dataset not run. Check out rebound commit 4a6c79ae14ffde27828dd9d1f8d8afeba94ef048 (HEAD of spockrandomintegrations branch on dtamayo/rebound fork) and rerun script if needed')
-            continue 
-    else:
-        if rebound.__githash__ != '6fb912f615ca542b670ab591375191d1ed914672':
-            print('{0} dataset not run. Check out rebound commit 6fb912f615ca542b670ab591375191d1ed914672 and rerun script if needed'.format(dataset))
-            continue 
-
     safolder = datapath + dataset + '/simulation_archives/runs/'
     trainingdatafolder = repopath + 'training_data/' + dataset + '/'
 
