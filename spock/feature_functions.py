@@ -96,7 +96,14 @@ def populate_trio(sim, trio, pairs, tseries, i):
     tseries[i,7] = sim.calculate_megno() # megno
 
 def get_tseries(sim, args):
-    Norbits = args[0]
+    #Norbits = args[0]
+    mtotal = sim.particles[1].m + sim.particles[2].m  + sim.particles[3].m
+    alpha13 = sim.particles[1].a / sim.particles[3].a 
+    ec13 = 1-alpha13 
+    Tsec = 4* sim.particles[0].m/mtotal * ec13 * ec13  * sim.particles[3].P
+    Norbits = 5* Tsec
+    if Norbits > 10**6:
+        Norbits = 10**6
     Nout = args[1]
     trios = args[2]
     

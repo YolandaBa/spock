@@ -16,14 +16,16 @@ def train_test_split(trainingdatafolder, features=None, labelname='Stable', filt
     if features is None:
         features = dataset.columns.values
     dataset['hasnull'] = dataset.apply(hasnull, axis=1)
-
     labels = pd.read_csv(trainingdatafolder+"labels.csv", index_col=0)
-    if filter:
+    if filter == 'tmax':
+        y = labels[(labels['instability_time'] > labels['tmax']) & (dataset['hasnull'] == 0)][labelname]
+        X = dataset[(labels['instability_time'] > labels['tmax']) & (dataset['hasnull'] == 0)][features]
+    elif filter:
         y = labels[(labels['instability_time'] > 1.e4) & (dataset['hasnull'] == 0)][labelname]
         X = dataset[(labels['instability_time'] > 1.e4) & (dataset['hasnull'] == 0)][features]
     elif filtertimes:
-        y = labels[labels['instability_time'] > 1.e4][labelname]
-        X = dataset[labels['instability_time'] > 1.e4][features]
+        y = labels[labels['instability_time'] > labels['tmax']][labelname]
+        X = dataset[labels['instability_time'] > labels['tmax']][features]
     else:
         y = labels[labelname]
         X = dataset[features]
@@ -70,7 +72,7 @@ def stable_unstable_hist(trainingdatafolder, model, features=None, filter=False,
     preds = model.predict_proba(testX)[:,1]
     stablepreds = preds[np.where(testy==1)]
     unstablepreds = preds[np.where(testy==0)]
-    return stablepreds, unstablepreds 
+    return stablepreds, unstablepreds
 
 def calibration_plot(trainingdatafolder, model, features=None, bins=10, filter=False, filtertimes=False):
     trainX, trainy, testX, testy = train_test_split(trainingdatafolder, features, filter=filter, filtertimes=filtertimes)

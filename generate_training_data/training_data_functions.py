@@ -14,13 +14,10 @@ def training_data(row, outputfolder, safolder, runfunc, args):
         my_dict = df.to_dict()
         # the binary file name you want to search for
         binary_file_name = row['runstring']
-
         # search for the binary file name in the dictionary
         for key, value in my_dict.items():
             if value == binary_file_name:
                 i = int(key)
-
-
         all_data = np.loadtxt(safolder+'/../../initial_conditions.csv', delimiter=',',dtype=np.float64)
         # get corresponding row
         data = all_data[i]
@@ -31,27 +28,7 @@ def training_data(row, outputfolder, safolder, runfunc, args):
         sim.add(m=data[7], x=data[8], y=data[9], z=data[10], vx=data[11], vy=data[12], vz=data[13])
         sim.add(m=data[14], x=data[15], y=data[16], z=data[17], vx=data[18], vy=data[19], vz=data[20])
         sim.add(m=data[21], x=data[22], y=data[23], z=data[24], vx=data[25], vy=data[26], vz=data[27])
-        #sa = rebound.SimulationArchive(safolder+'sa'+row['runstring'])
-        #sim = sa[0]
-        #old code:
-        #sa = rebound.SimulationArchive(safolder+'sa'+row['runstring'])
-        #sim = sa[0]
-        ##(random) string = row['runstring'] # should get something like: xxxxxxx.bin, eg 0000001.bin
-        # intRow get the binary file number of the binary file
-        ##intRow = int(string[:-4])  # remove the last four characters '.bin' and convert to integer
-
-        # read our csv
-        ##all_data = np.loadtxt('data.csv', delimiter=',',dtype=np.float64)
-        # get corresponding row
-        ##data = all_data[intRow]
-        # create a new simulation
-        ##sim = rebound.Simulation()
-        ##sim.G=4*np.pi**2
-        ##sim.add(m=data[0], x=data[1], y=data[2], z=data[3], vx=data[4], vy=data[5], vz=data[6])
-        ##sim.add(m=data[7], x=data[8], y=data[9], z=data[10], vx=data[11], vy=data[12], vz=data[13])
-        ##sim.add(m=data[14], x=data[15], y=data[16], z=data[17], vx=data[18], vy=data[19], vz=data[20])
-        ##sim.add(m=data[21], x=data[22], y=data[23], z=data[24], vx=data[25], vy=data[26], vz=data[27])
-        #fig1 = rebound.OrbitPlot(sim)
+ 
     except:
         print("training_data_functions.py Error reading " + safolder+'sa'+row['runstring'])
         return None
